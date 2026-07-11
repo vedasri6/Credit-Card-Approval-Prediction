@@ -1,0 +1,27 @@
+2026-07-06 21:14:23,654 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.203.229:5000
+2026-07-06 21:14:23,655 - INFO - [33mPress CTRL+C to quit[0m
+2026-07-06 21:14:23,668 - INFO -  * Restarting with watchdog (windowsapi)
+2026-07-06 21:14:25,246 - WARNING -  * Debugger is active!
+2026-07-06 21:14:25,247 - INFO -  * Debugger PIN: 600-750-393
+2026-07-06 21:14:40,041 - INFO - 127.0.0.1 - - [06/Jul/2026 21:14:40] "GET / HTTP/1.1" 200 -
+2026-07-06 21:14:40,223 - INFO - 127.0.0.1 - - [06/Jul/2026 21:14:40] "GET /static/images/roc_comparison.png HTTP/1.1" 200 -
+2026-07-06 21:14:40,224 - INFO - 127.0.0.1 - - [06/Jul/2026 21:14:40] "GET /static/css/style.css HTTP/1.1" 200 -
+2026-07-06 21:14:40,225 - INFO - 127.0.0.1 - - [06/Jul/2026 21:14:40] "GET /static/js/main.js HTTP/1.1" 200 -
+2026-07-06 21:14:41,209 - INFO - 127.0.0.1 - - [06/Jul/2026 21:14:41] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-07-06 21:15:49,089 - INFO - 127.0.0.1 - - [06/Jul/2026 21:15:49] "GET /predict HTTP/1.1" 200 -
+2026-07-06 21:15:49,103 - INFO - 127.0.0.1 - - [06/Jul/2026 21:15:49] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-07-06 21:15:49,107 - INFO - 127.0.0.1 - - [06/Jul/2026 21:15:49] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-07-06 21:18:37,909 - INFO - Successful prediction executed. Decision: Rejected | Score: 300
+2026-07-06 21:18:37,923 - INFO - 127.0.0.1 - - [06/Jul/2026 21:18:37] "POST /predict HTTP/1.1" 200 -
+2026-07-06 21:18:37,942 - INFO - 127.0.0.1 - - [06/Jul/2026 21:18:37] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-07-06 21:18:37,943 - INFO - 127.0.0.1 - - [06/Jul/2026 21:18:37] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-07-06 21:19:07,709 - INFO - 127.0.0.1 - - [06/Jul/2026 21:19:07] "GET /predict HTTP/1.1" 200 -
+2026-07-06 21:19:07,723 - INFO - 127.0.0.1 - - [06/Jul/2026 21:19:07] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-07-06 21:19:07,725 - INFO - 127.0.0.1 - - [06/Jul/2026 21:19:07] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2026-07-06 21:22:11,360 - INFO - Successful prediction executed. Decision: Approved | Score: 846
+2026-07-06 21:22:11,361 - INFO - 127.0.0.1 - - [06/Jul/2026 21:22:11] "POST /predict HTTP/1.1" 200 -
+2026-07-06 21:22:11,373 - INFO - 127.0.0.1 - - [06/Jul/2026 21:22:11] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2026-07-06 21:22:11,376 - INFO - 127.0.0.1 - - [06/Jul/2026 21:22:11] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -

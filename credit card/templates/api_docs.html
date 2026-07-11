@@ -1,0 +1,136 @@
+{% extends "layout.html" %}
+
+{% block title %}REST API Documentation{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <div class="glass-panel p-4 p-md-5 mb-5 text-center text-md-start">
+        <h2 class="fw-bold mb-3"><i class="bi bi-terminal-fill text-primary me-2"></i>Aegis REST API Integration</h2>
+        <p class="text-secondary mb-0">
+            Aegis credit prediction engine is accessible via standardized JSON REST APIs. Integrate inference operations inside client systems or microservice architectures.
+        </p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Endpoint Specs -->
+        <div class="col-lg-7">
+            <div class="glass-panel p-4 h-100">
+                <h5 class="fw-bold mb-4">API References</h5>
+                
+                <div class="mb-4">
+                    <span class="badge bg-primary px-3 py-2 fs-6 mb-2">POST</span>
+                    <code class="d-inline-block font-monospace ms-2 fs-6">/api/predict</code>
+                </div>
+
+                <p class="text-secondary small mb-3">
+                    Submits applicant profile details in standard JSON payload formatting. Returns approval classification status, confidence intervals, risk metrics, and scoring.
+                </p>
+
+                <h6 class="fw-bold mb-3 small text-uppercase text-secondary">JSON Body Schema Details</h6>
+                <div class="p-3 bg-body-tertiary rounded-3 border border-1 border-light mb-4">
+                    <pre class="m-0 font-monospace small" style="max-height: 250px; overflow-y: auto;">
+{
+  "gender": "Male",
+  "age": 30,
+  "income": 5000,
+  "employment_type": "Salaried",
+  "employment_years": 4.0,
+  "education": "Graduate",
+  "marital_status": "Married",
+  "dependents": 1,
+  "occupation": "Engineer",
+  "residence_type": "Owned",
+  "credit_history": "Good",
+  "existing_loans": 0,
+  "payment_history": "No Delays",
+  "annual_income": 60000,
+  "loan_amount": 15000,
+  "loan_purpose": "Home"
+}</pre>
+                </div>
+
+                <h6 class="fw-bold mb-3 small text-uppercase text-secondary">cURL Request Code Snippet</h6>
+                <div class="p-3 bg-dark text-white rounded-3 border border-secondary mb-2">
+                    <pre class="m-0 font-monospace small" style="white-space: pre-wrap; word-break: break-all;">
+curl -X POST http://localhost:5000/api/predict \
+  -H "Content-Type: application/json" \
+  -d '{"gender":"Male","age":30,"income":5000,"employment_type":"Salaried","employment_years":4.0,"education":"Graduate","marital_status":"Married","dependents":1,"occupation":"Engineer","residence_type":"Owned","credit_history":"Good","existing_loans":0,"payment_history":"No Delays","annual_income":60000,"loan_amount":15000,"loan_purpose":"Home"}'</pre>
+                </div>
+            </div>
+        </div>
+
+        <!-- Interactive Testing Console -->
+        <div class="col-lg-5">
+            <div class="glass-panel p-4 h-100">
+                <h5 class="fw-bold mb-3"><i class="bi bi-play-circle-fill text-success me-2"></i>Interactive Test Console</h5>
+                <p class="text-secondary small mb-4">Run live prediction queries directly inside this document console.</p>
+
+                <div class="mb-3">
+                    <button id="sendTestApiBtn" class="btn btn-primary-custom w-100 py-3">
+                        <i class="bi bi-lightning-charge-fill"></i> Dispatch Mock API request
+                    </button>
+                </div>
+
+                <h6 class="fw-bold mb-2 small text-uppercase text-secondary">JSON API Response Console</h6>
+                <div class="p-3 bg-dark text-light-emphasis rounded-3 border border-secondary" style="min-height: 200px;">
+                    <pre id="apiConsoleOutput" class="m-0 font-monospace small text-white-50" style="white-space: pre-wrap;">[Console Idle. Click 'Dispatch' to trigger sample evaluation request...]</pre>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const testBtn = document.getElementById('sendTestApiBtn');
+    const consoleOut = document.getElementById('apiConsoleOutput');
+
+    if (testBtn && consoleOut) {
+        testBtn.addEventListener('click', async () => {
+            consoleOut.innerText = "Dispatching HTTP POST Request to /api/predict...";
+            testBtn.disabled = true;
+
+            const payload = {
+                gender: "Male",
+                age: 30,
+                income: 5000,
+                employment_type: "Salaried",
+                employment_years: 4.0,
+                education: "Graduate",
+                marital_status: "Married",
+                dependents: 1,
+                occupation: "Engineer",
+                residence_type: "Owned",
+                credit_history: "Good",
+                existing_loans: 0,
+                payment_history: "No Delays",
+                annual_income: 60000,
+                loan_amount: 15000,
+                loan_purpose: "Home"
+            };
+
+            try {
+                const response = await fetch('/api/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(payload)
+                });
+                
+                const data = await response.json();
+                consoleOut.innerText = JSON.stringify(data, null, 2);
+            } catch (error) {
+                consoleOut.innerText = "HTTP Fetch Request Failed:\n" + error.message;
+            } finally {
+                testBtn.disabled = false;
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

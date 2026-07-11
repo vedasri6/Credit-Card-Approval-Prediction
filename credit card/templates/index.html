@@ -1,0 +1,139 @@
+{% extends "layout.html" %}
+
+{% block title %}AI Credit Card Decision Engine{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <!-- Hero Section -->
+    <section class="hero-section text-center text-lg-start">
+        <div class="row align-items-center g-5">
+            <div class="col-lg-6">
+                <div class="hero-badge">
+                    <i class="bi bi-cpu-fill"></i> Machine Learning Decision Support
+                </div>
+                <h1 class="hero-title fw-extrabold">Predict Credit Card Approvals Instantly</h1>
+                <p class="hero-description">
+                    Empower risk assessment teams with a predictive intelligence engine. Aegis evaluates credit risk matrices, debt capabilities, loan defaults, and outputs bank-grade approval decisions using ensemble ML.
+                </p>
+                <div class="d-flex flex-column flex-sm-row justify-content-center justify-content-lg-start gap-3">
+                    <a href="{{ url_for('predict') }}" class="btn btn-primary-custom">
+                        <i class="bi bi-file-earmark-person"></i> Evaluate Applicant
+                    </a>
+                    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary-custom">
+                        <i class="bi bi-graph-up-arrow"></i> System Analytics
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <!-- Visual Mockup Card -->
+                <div class="glass-panel p-4 position-relative mx-auto" style="max-width: 480px; border-radius: 24px;">
+                    <!-- Credit Card Mockup -->
+                    <div class="p-4 mb-4 text-start text-white shadow-lg" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%); border-radius: 16px; min-height: 180px; display: flex; flex-direction: column; justify-content: space-between;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="fw-bold tracking-widest small">AEGIS PLATINUM</span>
+                            <i class="bi bi-wallet2 fs-4"></i>
+                        </div>
+                        <div class="my-3">
+                            <h4 class="font-monospace mb-1">•••• •••• •••• 2026</h4>
+                            <p class="small text-white-50 m-0">PREDICTIVE SCORE SYSTEM</p>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-end">
+                            <div>
+                                <p class="small text-white-50 m-0" style="font-size: 0.75rem;">HOLDER</p>
+                                <span class="fw-semibold small">DECISION SUPPORT</span>
+                            </div>
+                            <span class="fw-bold fs-5 text-warning">AI SECURE</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats badge overlay -->
+                    <div class="d-flex align-items-center justify-content-between bg-body p-3 shadow-sm rounded-4 border border-1 border-light">
+                        <div class="d-flex align-items-center gap-3">
+                            <div class="analytics-card-icon icon-green m-0" style="width: 40px; height: 40px;">
+                                <i class="bi bi-shield-fill-check"></i>
+                            </div>
+                            <div class="text-start">
+                                <p class="text-muted small m-0">Best Accuracy</p>
+                                <span class="fw-bold">{% if metrics %}{{ (metrics.best_model_metrics.Accuracy * 100)|round(2) }}%{% else %}94.33%{% endif %}</span>
+                            </div>
+                        </div>
+                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-2 fw-bold">Active Engine</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Key Performance Stat Cards -->
+    <section class="py-5 border-top" style="border-color: var(--border-color) !important;">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="glass-card p-4 h-100">
+                    <div class="analytics-card-icon icon-blue">
+                        <i class="bi bi-cpu"></i>
+                    </div>
+                    <h5 class="fw-bold">11 ML Classifiers</h5>
+                    <p class="text-secondary small">Evaluates Logistic Regression, Random Forest, XGBoost, Support Vector Machines, KNN, and ensemble classifiers in parallel.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card p-4 h-100">
+                    <div class="analytics-card-icon icon-green">
+                        <i class="bi bi-diagram-3"></i>
+                    </div>
+                    <h5 class="fw-bold">Explainable AI</h5>
+                    <p class="text-secondary small">Computes localized feature contributions, risk scoring percentages, and compiles constructive action plans for applicants.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="glass-card p-4 h-100">
+                    <div class="analytics-card-icon icon-gold">
+                        <i class="bi bi-database-check"></i>
+                    </div>
+                    <h5 class="fw-bold">Log Audits</h5>
+                    <p class="text-secondary small">Stores historical predictions inside SQLite db schemas, offering analytics trends, search filters, and bulk CSV ingestion uploads.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Architecture Brief -->
+    <section class="py-5 bg-body-tertiary rounded-4 px-4 px-md-5 my-5 border border-1 border-light">
+        <div class="row align-items-center g-4">
+            <div class="col-lg-6">
+                <h3 class="fw-bold">Automated Decision Pipeline</h3>
+                <p class="text-secondary my-3">
+                    The Aegis credit pipeline processes standard personal details, financial parameters, and credit bureau histories. It performs automated imputation, outlier clipping, and derived feature calculations before running model inference.
+                </p>
+                <div class="d-flex flex-column gap-2">
+                    <div class="d-flex align-items-start gap-2">
+                        <i class="bi bi-check2-circle text-success fs-5"></i>
+                        <span class="small fw-semibold">Feature Engineering: Establishes Debt-to-Income, leverage, and consistency checks.</span>
+                    </div>
+                    <div class="d-flex align-items-start gap-2">
+                        <i class="bi bi-check2-circle text-success fs-5"></i>
+                        <span class="small fw-semibold">Categorical Handling: Maps categorical parameters with Robust One-Hot Encoding rules.</span>
+                    </div>
+                    <div class="d-flex align-items-start gap-2">
+                        <i class="bi bi-check2-circle text-success fs-5"></i>
+                        <span class="small fw-semibold">Ensemble Soft Voting: Integrates the top models for high reliability decision outputs.</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                {% if os_exists('static/images/roc_comparison.png') %}
+                <img src="{{ url_for('static', filename='images/roc_comparison.png') }}" class="img-fluid rounded-3 shadow-md border" alt="Model Evaluation Benchmarking" style="max-height: 320px;">
+                {% else %}
+                <!-- Placeholder if not trained yet -->
+                <div class="p-5 bg-secondary-subtle border border-dashed rounded-3 text-center">
+                    <i class="bi bi-bar-chart-line-fill text-muted fs-1 mb-2"></i>
+                    <p class="m-0 text-secondary">ROC Benchmarking chart will render here after executing training pipeline.</p>
+                    <code class="d-block mt-2 font-monospace small">python train.py</code>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock %}

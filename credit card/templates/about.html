@@ -1,0 +1,118 @@
+{% extends "layout.html" %}
+
+{% block title %}System Architecture & Benchmarks{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <div class="glass-panel p-4 p-md-5 mb-5">
+        <h2 class="fw-bold mb-3">About Aegis Decision Platform</h2>
+        <p class="text-secondary">
+            Aegis is an advanced machine learning architecture engineered for predictive modeling and risk assessment in retail consumer credit operations. Designed as a complete end-to-end engineering project, the platform implements a pipeline of cleaning, feature derivation, and benchmarking of eleven different classifiers to optimize classification metrics.
+        </p>
+    </div>
+
+    <!-- Machine Learning Leaderboard -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-7">
+            <div class="glass-panel p-4 h-100">
+                <h5 class="fw-bold mb-4"><i class="bi bi-trophy text-warning me-2"></i>Model Performance Leaderboard</h5>
+                
+                <div class="table-responsive">
+                    <table class="table table-custom m-0">
+                        <thead>
+                            <tr>
+                                <th>Model Classifier</th>
+                                <th>Val Accuracy</th>
+                                <th>Precision</th>
+                                <th>Recall</th>
+                                <th>ROC-AUC</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if metrics and 'leaderboard' in metrics %}
+                                {% for model in metrics.leaderboard %}
+                                <tr {% if model.Model == metrics.best_model %}style="background: rgba(var(--primary-rgb), 0.05); font-weight: 600;"{% endif %}>
+                                    <td>
+                                        {% if model.Model == metrics.best_model %}
+                                        <i class="bi bi-star-fill text-warning me-1"></i>
+                                        {% endif %}
+                                        {{ model.Model }}
+                                    </td>
+                                    <td>{{ (model.Accuracy * 100)|round(2) }}%</td>
+                                    <td>{{ (model.Precision * 100)|round(2) }}%</td>
+                                    <td>{{ (model.Recall * 100)|round(2) }}%</td>
+                                    <td>{{ model.ROC_AUC|round(4) }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="5" class="text-center py-4 text-secondary">
+                                        No performance leaderboard loaded. Run training pipeline to generate metrics.
+                                    </td>
+                                </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Architecture Flow -->
+        <div class="col-lg-5">
+            <div class="glass-panel p-4 h-100 d-flex flex-column justify-content-between">
+                <div>
+                    <h5 class="fw-bold mb-4"><i class="bi bi-diagram-3-fill text-primary me-2"></i>System Architecture Workflow</h5>
+                    
+                    <div class="d-flex flex-column gap-3">
+                        <div class="d-flex gap-3 align-items-start">
+                            <div class="badge bg-primary rounded-circle px-2 py-2" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">1</div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Synthesizer & Ingestion</h6>
+                                <p class="text-muted small m-0">Generates or ingests CSV tables with multi-variable demographics and bureau flags.</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 align-items-start">
+                            <div class="badge bg-primary rounded-circle px-2 py-2" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">2</div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Imputation & Scaling</h6>
+                                <p class="text-muted small m-0">Resolves missing fields with median/mode rules, caps numerical outliers, and standardizes scales.</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 align-items-start">
+                            <div class="badge bg-primary rounded-circle px-2 py-2" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">3</div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Feature Engineering</h6>
+                                <p class="text-muted small m-0">Derives credit scoring metrics including Debt-to-Income and leverage coefficients.</p>
+                            </div>
+                        </div>
+                        <div class="d-flex gap-3 align-items-start">
+                            <div class="badge bg-primary rounded-circle px-2 py-2" style="width: 32px; height: 32px; display: flex; align-items: center; justify-content: center;">4</div>
+                            <div>
+                                <h6 class="fw-bold mb-1">Ensemble soft voting</h6>
+                                <p class="text-muted small m-0">Compares models (Random Forest, XGBoost, SVM) and selects the best performer for serialization.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tech Stack badges -->
+    <div class="glass-panel p-4">
+        <h5 class="fw-bold mb-4">Underlying Core Stack</h5>
+        <div class="d-flex flex-wrap gap-2">
+            <span class="badge bg-dark px-3 py-2 border">Python 3.10+</span>
+            <span class="badge bg-dark px-3 py-2 border">Flask API Server</span>
+            <span class="badge bg-dark px-3 py-2 border">Scikit-Learn</span>
+            <span class="badge bg-dark px-3 py-2 border">XGBoost Classifier</span>
+            <span class="badge bg-dark px-3 py-2 border">SQLite 3 Database</span>
+            <span class="badge bg-dark px-3 py-2 border">Bootstrap 5 Frontend</span>
+            <span class="badge bg-dark px-3 py-2 border">Chart.js Visuals</span>
+            <span class="badge bg-dark px-3 py-2 border">Joblib Serialization</span>
+        </div>
+    </div>
+
+</div>
+{% endblock %}

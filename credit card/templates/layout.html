@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Aegis Credit Approval{% endblock %} - Credit Card Approval Prediction System</title>
+    
+    <!-- Meta tags for SEO -->
+    <meta name="description" content="Predict credit card application approvals using state-of-the-art machine learning models. Instantly analyze risk metrics, credit scores, and feature importance.">
+    <meta name="author" content="Engineering Group">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    
+    <!-- Custom Style CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    {% block head %}{% endblock %}
+</head>
+<body>
+
+    <!-- Preloader Screen -->
+    <div id="preloader" class="preloader">
+        <div class="spinner-custom mb-3"></div>
+        <h5 class="fw-bold" style="color: var(--primary);">Aegis AI System Loading</h5>
+        <p class="text-muted small">Preparing predictive parameters...</p>
+    </div>
+
+    <!-- Responsive Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-custom sticky-top">
+        <div class="container">
+            <a class="navbar-brand navbar-brand-custom" href="{{ url_for('home') }}">
+                <i class="bi bi-shield-check"></i>
+                <span>AEGIS CREDIT</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarText">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4 gap-2">
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom {% if request.path == '/' %}active{% endif %}" href="{{ url_for('home') }}">
+                            <i class="bi bi-house-door me-1"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom {% if request.path == '/predict' %}active{% endif %}" href="{{ url_for('predict') }}">
+                            <i class="bi bi-card-checklist me-1"></i> Apply / Predict
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom {% if request.path == '/dashboard' %}active{% endif %}" href="{{ url_for('dashboard') }}">
+                            <i class="bi bi-speedometer2 me-1"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link nav-link-custom {% if request.path == '/about' %}active{% endif %}" href="{{ url_for('about') }}">
+                            <i class="bi bi-info-circle me-1"></i> About System
+                        </a>
+                    </li>
+                </ul>
+                
+                <div class="d-flex align-items-center gap-3">
+                    <!-- Light/Dark Mode Switcher -->
+                    <button id="theme-toggle" class="theme-toggle-btn" title="Toggle color theme">
+                        <i class="bi bi-moon-stars-fill"></i>
+                    </button>
+                    
+                    <a href="{{ url_for('predict') }}" class="btn btn-primary-custom d-none d-sm-inline-flex">
+                        <i class="bi bi-patch-check"></i> Test Application
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Area -->
+    <main class="py-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Responsive Footer -->
+    <footer class="footer-custom">
+        <div class="container text-center text-md-start">
+            <div class="row g-4">
+                <div class="col-md-5">
+                    <div class="navbar-brand-custom mb-3">
+                        <i class="bi bi-shield-check"></i>
+                        <span class="fw-bold">AEGIS CREDIT AI</span>
+                    </div>
+                    <p class="text-secondary small max-width-350">
+                        An advanced machine learning decision platform built to evaluate credit card application risks, approval scores, and individual creditworthiness profiles.
+                    </p>
+                </div>
+                
+                <div class="col-md-3 ms-auto">
+                    <h6 class="fw-bold text-uppercase mb-3" style="letter-spacing: 0.05em; font-size: 0.8rem;">Quick Links</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small">
+                        <li><a href="{{ url_for('home') }}" class="text-secondary text-decoration-none">Home Screen</a></li>
+                        <li><a href="{{ url_for('predict') }}" class="text-secondary text-decoration-none">Prediction Evaluator</a></li>
+                        <li><a href="{{ url_for('dashboard') }}" class="text-secondary text-decoration-none">Analytics Dashboard</a></li>
+                        <li><a href="{{ url_for('about') }}" class="text-secondary text-decoration-none">Model Benchmarks</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-3">
+                    <h6 class="fw-bold text-uppercase mb-3" style="letter-spacing: 0.05em; font-size: 0.8rem;">API Services</h6>
+                    <ul class="list-unstyled d-flex flex-column gap-2 small">
+                        <li><a href="/api/docs" class="text-secondary text-decoration-none">Swagger REST API Docs</a></li>
+                        <li><span class="text-secondary">Security: CSRF/XSS Shielded</span></li>
+                        <li><span class="text-secondary">Engine: Scikit-Learn / XGBoost</span></li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: var(--border-color)">
+            <div class="d-flex flex-column flex-md-row justify-content-between align-items-center gap-2 small text-secondary">
+                <div>© 2026 Aegis Decision Platform. All rights reserved.</div>
+                <div>Designed as a Final Year Engineering Project.</div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap 5 Bundle JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Client Main JavaScript -->
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html>

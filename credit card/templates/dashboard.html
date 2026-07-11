@@ -1,0 +1,305 @@
+{% extends "layout.html" %}
+
+{% block title %}System Analytics Dashboard{% endblock %}
+
+{% block head %}
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <!-- Analytics Header -->
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+        <div>
+            <h2 class="fw-bold">Analytics & Log History</h2>
+            <p class="text-secondary m-0">Track real-time decision stats, risk distribution, and historical logs.</p>
+        </div>
+        <div class="d-flex gap-2">
+            <a href="{{ url_for('download_history_csv') }}" class="btn btn-secondary-custom">
+                <i class="bi bi-download"></i> Download History CSV
+            </a>
+            <!-- Button trigger modal for Bulk Ingestion -->
+            <button type="button" class="btn btn-primary-custom" data-bs-toggle="modal" data-bs-target="#bulkUploadModal">
+                <i class="bi bi-file-earmark-spreadsheet"></i> Bulk CSV Predict
+            </button>
+        </div>
+    </div>
+
+    <!-- Analytics Cards Grid -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-3">
+            <div class="glass-card analytics-card h-100">
+                <div class="analytics-card-icon icon-blue">
+                    <i class="bi bi-activity"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold m-0">{{ analytics.total_predictions }}</h3>
+                    <p class="text-secondary small m-0 mt-1">Total Predictions Run</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="glass-card analytics-card h-100">
+                <div class="analytics-card-icon icon-green">
+                    <i class="bi bi-shield-fill-check"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold m-0">{{ analytics.approved_count }}</h3>
+                    <p class="text-secondary small m-0 mt-1">Approved Applications</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="glass-card analytics-card h-100">
+                <div class="analytics-card-icon icon-red">
+                    <i class="bi bi-shield-fill-x"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold m-0">{{ analytics.rejected_count }}</h3>
+                    <p class="text-secondary small m-0 mt-1">Rejected Applications</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="glass-card analytics-card h-100">
+                <div class="analytics-card-icon icon-gold">
+                    <i class="bi bi-cash"></i>
+                </div>
+                <div>
+                    <h3 class="fw-bold m-0">${{ "{:,.2f}".format(analytics.avg_loan_amount) }}</h3>
+                    <p class="text-secondary small m-0 mt-1">Average Loan Requested</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Charts Section -->
+    <div class="row g-4 mb-5">
+        <div class="col-lg-4">
+            <div class="glass-panel p-4 h-100">
+                <h5 class="fw-bold mb-4">Risk Profile Distribution</h5>
+                <div style="height: 250px; position: relative;">
+                    <canvas id="riskChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-8">
+            <div class="glass-panel p-4 h-100">
+                <h5 class="fw-bold mb-4">Loan Purpose Breakdown</h5>
+                <div style="height: 250px; position: relative;">
+                    <canvas id="purposeChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prediction History Log Table -->
+    <div class="glass-panel p-4">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-4">
+            <h5 class="fw-bold m-0"><i class="bi bi-journal-text text-primary me-2"></i>History Log Directory</h5>
+            
+            <!-- Search bar -->
+            <form action="{{ url_for('dashboard') }}" method="GET" class="search-wrapper" style="max-width: 320px; width: 100%;">
+                <i class="bi bi-search"></i>
+                <input type="text" name="search" value="{{ search_query or '' }}" class="form-control form-input-custom" placeholder="Search predictions...">
+            </form>
+        </div>
+
+        <div class="table-responsive">
+            <table class="table table-custom m-0">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Applicant Profile</th>
+                        <th>Purpose</th>
+                        <th>Income (Mo.)</th>
+                        <th>Loan Amt.</th>
+                        <th>Risk Profile</th>
+                        <th>Decision Status</th>
+                        <th>Score</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr>
+                        <td>
+                            <small class="text-secondary d-block">{{ row.timestamp[:10] }}</small>
+                            <small class="text-muted" style="font-size: 0.75rem;">{{ row.timestamp[11:16] }}</small>
+                        </td>
+                        <td>
+                            <span class="fw-semibold d-block text-capitalize">{{ row.occupation }}</span>
+                            <small class="text-secondary">{{ row.age }} yrs • {{ row.gender }}</small>
+                        </td>
+                        <td><span class="badge bg-light text-dark">{{ row.loan_purpose }}</span></td>
+                        <td>${{ "{:,.0f}".format(row.income) }}</td>
+                        <td>${{ "{:,.0f}".format(row.loan_amount) }}</td>
+                        <td>
+                            <span class="small fw-semibold {% if row.risk_level == 'High Risk' %}text-danger{% elif row.risk_level == 'Medium Risk' %}text-warning{% else %}text-success{% endif %}">
+                                {{ row.risk_level }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if row.prediction == 'Approved' %}
+                            <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1">Approved</span>
+                            {% else %}
+                            <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-1">Rejected</span>
+                            {% endif %}
+                        </td>
+                        <td><span class="fw-bold font-monospace text-primary">{{ row.approval_score }}</span></td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="8" class="text-center py-5 text-secondary">
+                            <i class="bi bi-database-fill-x fs-1 text-muted mb-2 d-block"></i>
+                            No prediction records located. Execute a credit prediction to register audits.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination Controls -->
+        {% if total_pages > 1 %}
+        <nav class="d-flex justify-content-between align-items-center mt-4">
+            <span class="small text-secondary">Showing page {{ current_page }} of {{ total_pages }}</span>
+            <ul class="pagination pagination-sm m-0 gap-1">
+                <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
+                    <a class="page-link border-0 rounded-3 bg-light text-dark" href="{{ url_for('dashboard', page=current_page-1, search=search_query) }}">Previous</a>
+                </li>
+                {% for p in range(1, total_pages+1) %}
+                <li class="page-item {% if p == current_page %}active{% endif %}">
+                    <a class="page-link border-0 rounded-3 {% if p == current_page %}bg-primary text-white{% else %}bg-light text-dark{% endif %}" href="{{ url_for('dashboard', page=p, search=search_query) }}">{{ p }}</a>
+                </li>
+                {% endfor %}
+                <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
+                    <a class="page-link border-0 rounded-3 bg-light text-dark" href="{{ url_for('dashboard', page=current_page+1, search=search_query) }}">Next</a>
+                </li>
+            </ul>
+        </nav>
+        {% endif %}
+    </div>
+
+</div>
+
+<!-- Bulk Ingestion Modal -->
+<div class="modal fade" id="bulkUploadModal" tabindex="-1" aria-labelledby="bulkUploadModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-custom glass-panel">
+            <div class="modal-header border-0 pb-0">
+                <h5 class="modal-title fw-bold" id="bulkUploadModalLabel"><i class="bi bi-file-earmark-spreadsheet-fill text-primary me-2"></i>Bulk Ingestion</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="{{ url_for('predict_bulk_post') }}" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                
+                <div class="modal-body py-4">
+                    <p class="text-secondary small mb-3">
+                        Upload a CSV spreadsheet containing credit applications. All columns must match the required template file structure.
+                    </p>
+                    
+                    <div class="mb-4">
+                        <label for="csvFile" class="form-label form-label-custom">Upload CSV Spreadsheet</label>
+                        <input type="file" name="file" id="csvFile" class="form-control form-input-custom" accept=".csv" required>
+                    </div>
+                    
+                    <div class="d-flex justify-content-between align-items-center">
+                        <a href="{{ url_for('download_csv_template') }}" class="small text-primary text-decoration-none fw-semibold">
+                            <i class="bi bi-download"></i> Download Sample CSV
+                        </a>
+                        <span class="small text-muted">UTF-8 Format required</span>
+                    </div>
+                </div>
+                
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-secondary-custom" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary-custom">Execute Bulk ML</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#d1d5db' : '#475569';
+    const gridColor = isDark ? '#374151' : '#e2e8f0';
+
+    // 1. Risk Profile Chart (Doughnut)
+    const riskCtx = document.getElementById('riskChart').getContext('2d');
+    const riskData = {{ analytics.risk_distribution|tojson }};
+    const riskLabels = Object.keys(riskData);
+    const riskValues = Object.values(riskData);
+
+    new Chart(riskCtx, {
+        type: 'doughnut',
+        data: {
+            labels: riskLabels,
+            datasets: [{
+                data: riskValues,
+                backgroundColor: [
+                    'rgba(16, 185, 129, 0.85)', // Low Risk -> Green
+                    'rgba(245, 158, 11, 0.85)', // Medium Risk -> Yellow
+                    'rgba(239, 68, 68, 0.85)'   // High Risk -> Red
+                ],
+                borderColor: isDark ? '#111827' : '#ffffff',
+                borderWidth: 2
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                    labels: { color: textColor, boxWidth: 12 }
+                }
+            }
+        }
+    });
+
+    // 2. Loan Purpose Chart (Bar)
+    const purposeCtx = document.getElementById('purposeChart').getContext('2d');
+    const purposeData = {{ analytics.purpose_distribution|tojson }};
+    const purposeLabels = Object.keys(purposeData);
+    const purposeValues = Object.values(purposeData);
+
+    new Chart(purposeCtx, {
+        type: 'bar',
+        data: {
+            labels: purposeLabels,
+            datasets: [{
+                label: 'Applications count',
+                data: purposeValues,
+                backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                borderColor: '#3b82f6',
+                borderWidth: 1,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: textColor }
+                },
+                y: {
+                    grid: { color: gridColor },
+                    ticks: { color: textColor, precision: 0 }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

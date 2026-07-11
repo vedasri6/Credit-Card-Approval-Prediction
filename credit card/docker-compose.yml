@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  credit-card-approval-system:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aegis_credit_prediction
+    ports:
+      - "5000:5000"
+    environment:
+      - PORT=5000
+      - SECRET_KEY=prod-docker-compose-secret-key-3289547
+    volumes:
+      # Persistent local database state storage mount
+      - credit_db_volume:/app/data
+    restart: always
+
+volumes:
+  credit_db_volume:

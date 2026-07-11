@@ -1,0 +1,209 @@
+{% extends "layout.html" %}
+
+{% block title %}Application Analysis Result{% endblock %}
+
+{% block head %}
+<!-- Chart.js CDN for interactive charts -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    
+    <!-- Printable area wrapper -->
+    <div id="printableArea">
+        <div class="row g-4">
+            
+            <!-- Left Side: Status & Speedometer Gauge -->
+            <div class="col-lg-5">
+                <div class="glass-panel p-4 h-100 text-center d-flex flex-column justify-content-between">
+                    
+                    <div>
+                        <h4 class="fw-bold mb-3">Evaluation Decision</h4>
+                        <div class="mb-4">
+                            {% if result.prediction == 'Approved' %}
+                            <span class="decision-badge decision-approved">
+                                <i class="bi bi-shield-fill-check fs-5"></i> Approved
+                            </span>
+                            {% else %}
+                            <span class="decision-badge decision-rejected">
+                                <i class="bi bi-shield-fill-x fs-5"></i> Rejected
+                            </span>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Credit Score Gauge -->
+                        <div class="gauge-container">
+                            <div class="gauge-body"></div>
+                            <div class="gauge-fill"></div>
+                            <div class="gauge-needle"></div>
+                            <div class="gauge-center-node"></div>
+                        </div>
+                        
+                        <div class="gauge-label mt-1" id="creditScoreVal" data-score="{{ result.approval_score }}">300</div>
+                        <p class="text-uppercase tracking-widest text-muted small fw-bold">Computed Approval Rating</p>
+                    </div>
+                    
+                    <hr class="my-4" style="border-color: var(--border-color)">
+                    
+                    <!-- Stats / Metadata Grid -->
+                    <div class="row g-3 text-start mb-2">
+                        <div class="col-6 border-end">
+                            <p class="text-muted small m-0">Risk Profile</p>
+                            <span class="fw-bold fs-6 text-primary">
+                                <i class="bi bi-exclamation-triangle me-1"></i> {{ result.risk_level }}
+                            </span>
+                        </div>
+                        <div class="col-6">
+                            <p class="text-muted small m-0">AI Confidence</p>
+                            <span class="fw-bold fs-6 text-primary">
+                                <i class="bi bi-percent me-1"></i> {{ (result.confidence * 100)|round(2) }}%
+                            </span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <!-- Right Side: Details, Reasons, Suggestions -->
+            <div class="col-lg-7">
+                <div class="glass-panel p-4 p-md-5 h-100 d-flex flex-column justify-content-between">
+                    
+                    <div>
+                        <h4 class="fw-bold mb-4"><i class="bi bi-file-earmark-bar-graph me-2 text-primary"></i>Decision Factor Breakdown</h4>
+                        
+                        <div class="mb-4">
+                            <h6 class="fw-bold text-uppercase text-secondary mb-3" style="font-size: 0.8rem; letter-spacing: 0.05em;">Key Contributing Factors</h6>
+                            <ul class="decision-list {% if result.prediction == 'Approved' %}decision-list-good{% else %}decision-list-bad{% endif %}">
+                                {% for reason in result.reasons %}
+                                <li>
+                                    <i class="bi {% if result.prediction == 'Approved' %}bi-patch-check-fill{% else %}bi-exclamation-circle-fill{% endif %}"></i>
+                                    {{ reason }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        
+                        <div>
+                            <h6 class="fw-bold text-uppercase text-secondary mb-3" style="font-size: 0.8rem; letter-spacing: 0.05em;">Recommended Actions / Suggestions</h6>
+                            <ul class="decision-list decision-list-good">
+                                {% for sug in result.suggestions %}
+                                <li>
+                                    <i class="bi bi-info-circle-fill text-primary"></i>
+                                    {{ sug }}
+                                </li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Print & navigation buttons -->
+                    <div class="mt-4 pt-3 border-top d-flex gap-3 justify-content-end" id="btnGroup">
+                        <button onclick="window.print();" class="btn btn-secondary-custom">
+                            <i class="bi bi-printer"></i> Export PDF Summary
+                        </button>
+                        <a href="{{ url_for('predict') }}" class="btn btn-primary-custom">
+                            <i class="bi bi-arrow-left"></i> Run Another Application
+                        </a>
+                    </div>
+                    
+                </div>
+            </div>
+            
+            <!-- Row 2: Local Feature Contributions chart -->
+            <div class="col-12 mt-4">
+                <div class="glass-panel p-4">
+                    <h5 class="fw-bold mb-4"><i class="bi bi-pie-chart-fill text-primary me-2"></i>Local Model Feature Contributions</h5>
+                    <div style="max-height: 300px; position: relative;">
+                        <canvas id="contributionChart" style="max-height: 280px;"></canvas>
+                    </div>
+                    <p class="text-muted small mt-3 m-0">
+                        * Values depict relative feature influence vectors computed from the trained classification model for this specific application.
+                    </p>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<style>
+/* CSS Print layout formatting to guarantee clean PDF summary exports */
+@media print {
+    body {
+        background: #ffffff !important;
+        color: #000000 !important;
+    }
+    .navbar-custom, footer-custom, #btnGroup, .theme-toggle-btn {
+        display: none !important;
+    }
+    .glass-panel {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+        backdrop-filter: none !important;
+    }
+    main {
+        padding: 0 !important;
+    }
+    .col-lg-5, .col-lg-7, .col-12 {
+        width: 100% !important;
+        float: none !important;
+    }
+    .gauge-container {
+        margin: 1rem auto !important;
+    }
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Render local feature contributions chart using Chart.js
+    const ctx = document.getElementById('contributionChart').getContext('2d');
+    
+    // Parse json contributions from backend template variables
+    const contributions = {{ result.feature_contributions|tojson }};
+    const labels = Object.keys(contributions);
+    const data = Object.values(contributions);
+    
+    // Check dark mode status to align fonts/colors
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const textColor = isDark ? '#d1d5db' : '#475569';
+    const gridColor = isDark ? '#374151' : '#e2e8f0';
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Relative Contribution Weight',
+                data: data,
+                backgroundColor: 'rgba(59, 130, 246, 0.75)',
+                borderColor: '#3b82f6',
+                borderWidth: 1.5,
+                borderRadius: 6
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: textColor }
+                },
+                y: {
+                    grid: { color: gridColor },
+                    ticks: { color: textColor }
+                }
+            },
+            plugins: {
+                legend: { display: false }
+            }
+        }
+    });
+});
+</script>
+{% endblock %}

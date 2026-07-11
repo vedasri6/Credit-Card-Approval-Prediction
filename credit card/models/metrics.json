@@ -1,0 +1,197 @@
+{
+    "best_model": "Logistic Regression",
+    "leaderboard": [
+        {
+            "Model": "Logistic Regression",
+            "Accuracy": 0.9866666666666667,
+            "Precision": 0.9833333333333333,
+            "Recall": 1.0,
+            "F1_Score": 0.9915966386554622,
+            "ROC_AUC": 0.9966896186440678,
+            "CV_Accuracy": 0.9808333333333333
+        },
+        {
+            "Model": "Decision Tree",
+            "Accuracy": 0.98,
+            "Precision": 0.9872881355932204,
+            "Recall": 0.9872881355932204,
+            "F1_Score": 0.9872881355932204,
+            "ROC_AUC": 0.9817597987288135,
+            "CV_Accuracy": 0.9708333333333332
+        },
+        {
+            "Model": "Random Forest",
+            "Accuracy": 0.9866666666666667,
+            "Precision": 0.9833333333333333,
+            "Recall": 1.0,
+            "F1_Score": 0.9915966386554622,
+            "ROC_AUC": 0.997748940677966,
+            "CV_Accuracy": 0.9816666666666667
+        },
+        {
+            "Model": "Gradient Boosting",
+            "Accuracy": 0.9866666666666667,
+            "Precision": 0.9833333333333333,
+            "Recall": 1.0,
+            "F1_Score": 0.9915966386554622,
+            "ROC_AUC": 0.999073093220339,
+            "CV_Accuracy": 0.9791666666666666
+        },
+        {
+            "Model": "Extra Trees",
+            "Accuracy": 0.9866666666666667,
+            "Precision": 0.9833333333333333,
+            "Recall": 1.0,
+            "F1_Score": 0.9915966386554622,
+            "ROC_AUC": 0.9906647245762712,
+            "CV_Accuracy": 0.9816666666666667
+        },
+        {
+            "Model": "AdaBoost",
+            "Accuracy": 0.9866666666666667,
+            "Precision": 0.9833333333333333,
+            "Recall": 1.0,
+            "F1_Score": 0.9915966386554622,
+            "ROC_AUC": 0.9990068855932204,
+            "CV_Accuracy": 0.9799999999999999
+        },
+        {
+            "Model": "XGBoost",
+            "Accuracy": 0.9866666666666667,
+            "Precision": 0.9833333333333333,
+            "Recall": 1.0,
+            "F1_Score": 0.9915966386554622,
+            "ROC_AUC": 0.9993379237288136,
+            "CV_Accuracy": 0.9816666666666667
+        },
+        {
+            "Model": "Support Vector Machine",
+            "Accuracy": 0.9866666666666667,
+            "Precision": 0.9833333333333333,
+            "Recall": 1.0,
+            "F1_Score": 0.9915966386554622,
+            "ROC_AUC": 0.9900026483050848,
+            "CV_Accuracy": 0.9833333333333334
+        },
+        {
+            "Model": "Naive Bayes",
+            "Accuracy": 0.9866666666666667,
+            "Precision": 0.9833333333333333,
+            "Recall": 1.0,
+            "F1_Score": 0.9915966386554622,
+            "ROC_AUC": 0.9703720868644068,
+            "CV_Accuracy": 0.9833333333333334
+        },
+        {
+            "Model": "K Nearest Neighbors",
+            "Accuracy": 0.9166666666666666,
+            "Precision": 0.9042145593869731,
+            "Recall": 1.0,
+            "F1_Score": 0.9496981891348089,
+            "ROC_AUC": 0.965770656779661,
+            "CV_Accuracy": 0.9191666666666667
+        },
+        {
+            "Model": "Voting Classifier",
+            "Accuracy": 0.9866666666666667,
+            "Precision": 0.9833333333333333,
+            "Recall": 1.0,
+            "F1_Score": 0.9915966386554622,
+            "ROC_AUC": 0.9980799788135594,
+            "CV_Accuracy": 0.9816666666666667
+        }
+    ],
+    "best_model_metrics": {
+        "Accuracy": 0.9866666666666667,
+        "Precision": 0.9833333333333333,
+        "Recall": 1.0,
+        "F1_Score": 0.9915966386554622,
+        "ROC_AUC": 0.9966896186440678,
+        "CV_Accuracy_Mean": 0.9808333333333333,
+        "CV_Accuracy_Std": 0.0020412414523193075,
+        "Confusion_Matrix": [
+            [
+                60,
+                4
+            ],
+            [
+                0,
+                236
+            ]
+        ],
+        "Classification_Report": {
+            "0": {
+                "precision": 1.0,
+                "recall": 0.9375,
+                "f1-score": 0.967741935483871,
+                "support": 64.0
+            },
+            "1": {
+                "precision": 0.9833333333333333,
+                "recall": 1.0,
+                "f1-score": 0.9915966386554622,
+                "support": 236.0
+            },
+            "accuracy": 0.9866666666666667,
+            "macro avg": {
+                "precision": 0.9916666666666667,
+                "recall": 0.96875,
+                "f1-score": 0.9796692870696666,
+                "support": 300.0
+            },
+            "weighted avg": {
+                "precision": 0.9868888888888889,
+                "recall": 0.9866666666666667,
+                "f1-score": 0.9865076353121893,
+                "support": 300.0
+            }
+        }
+    },
+    "feature_importance": {
+        "Credit_History_Good": 0.17737826491520398,
+        "Credit_History_Bad": 0.17698335877799382,
+        "Payment_History_Frequent Delays": 0.0769990787150653,
+        "Payment_History_No Delays": 0.0622776559667384,
+        "Debt_to_Income_Ratio": 0.038145684134125966,
+        "Occupation_Others": 0.03548843618809298,
+        "Marital_Status_Widowed": 0.034852010710669214,
+        "Employment_to_Age_Ratio": 0.03408934727421219,
+        "Marital_Status_Divorced": 0.03404328463554028,
+        "Occupation_Clerk": 0.031154745751049862,
+        "Loan_Purpose_Business": 0.023797404065039482,
+        "Loan_to_Income_Ratio": 0.023593190005153693,
+        "Leverage_Score": 0.022386912026129593,
+        "Employment_Type_Unemployed": 0.022092544698317545,
+        "Employment_Type_Self-Employed": 0.02121925903585749,
+        "Loan_Purpose_Education": 0.02070029561656929,
+        "Payment_History_Occasional Delays": 0.015116328885537142,
+        "Income_Per_Dependent": 0.014043803779633213,
+        "Occupation_Business Owner": 0.011437373937072459,
+        "Annual_Income": 0.011089491723150212,
+        "Employment_Type_Salaried": 0.009779898641376458,
+        "Education_Graduate": 0.009770456098765309,
+        "Income": 0.009625540482410655,
+        "Age": 0.009514714864894748,
+        "Education_Post-Graduate": 0.009143585312152456,
+        "Employment_Type_Retired": 0.008511706841706206,
+        "Residence_Type_Owned": 0.007504782161519089,
+        "Dependents": 0.006439731369153133,
+        "Gender_Female": 0.006192439056388011,
+        "Employment_Years": 0.005880440466706828,
+        "Gender_Male": 0.005797532919177826,
+        "Residence_Type_Rented": 0.005429518621968344,
+        "Occupation_Sales": 0.0030879728373430773,
+        "Loan_Purpose_Personal": 0.002930716204675602,
+        "Occupation_Engineer": 0.002780153656378559,
+        "Income_Consistency_Ratio": 0.0026731968888160785,
+        "Residence_Type_Mortgaged": 0.0016803574023405673,
+        "Loan_Amount": 0.0016640474709424709,
+        "Occupation_Manager": 0.0016304631435178928,
+        "Existing_Loans": 0.0007765894408315539,
+        "Loan_Purpose_Car": 0.0007115058159558874,
+        "Marital_Status_Single": 0.0006425214139015356,
+        "Loan_Purpose_Home": 0.00048299192254030467,
+        "Education_High School": 0.0002319646494026708,
+        "Marital_Status_Married": 0.00022870147598280408
+    }
+}

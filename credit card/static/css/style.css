@@ -1,0 +1,540 @@
+/* Credit Card Approval Prediction System - Modern Banking CSS Design System */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+    /* Light Mode Tokens */
+    --bg-primary: #f8fafc;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #f1f5f9;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    
+    --primary: #2563eb;
+    --primary-hover: #1d4ed8;
+    --primary-rgb: 37, 99, 235;
+    
+    --success: #10b981;
+    --success-rgb: 16, 185, 129;
+    --danger: #ef4444;
+    --danger-rgb: 239, 68, 68;
+    --warning: #f59e0b;
+    
+    --border-color: #e2e8f0;
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    
+    --glass-bg: rgba(255, 255, 255, 0.7);
+    --glass-border: rgba(226, 232, 240, 0.8);
+    --glass-blur: 12px;
+}
+
+[data-theme="dark"] {
+    /* Dark Mode Tokens */
+    --bg-primary: #0b0f19;
+    --bg-secondary: #111827;
+    --bg-tertiary: #1f2937;
+    --text-primary: #f9fafb;
+    --text-secondary: #d1d5db;
+    --text-muted: #6b7280;
+    
+    --primary: #3b82f6;
+    --primary-hover: #60a5fa;
+    --primary-rgb: 59, 130, 246;
+    
+    --success: #34d399;
+    --success-rgb: 52, 211, 153;
+    --danger: #f87171;
+    --danger-rgb: 248, 113, 113;
+    --warning: #fbbf24;
+    
+    --border-color: #374151;
+    
+    --glass-bg: rgba(17, 24, 39, 0.7);
+    --glass-border: rgba(55, 65, 81, 0.8);
+    --glass-blur: 12px;
+}
+
+/* Global Reset & Base Styling */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+body {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+/* Glassmorphism Classes */
+.glass-panel {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+}
+
+.glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s ease;
+}
+
+.glass-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-xl);
+}
+
+/* Navbar Custom Styling */
+.navbar-custom {
+    background: var(--glass-bg);
+    backdrop-filter: blur(var(--glass-blur));
+    -webkit-backdrop-filter: blur(var(--glass-blur));
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1rem 0;
+}
+
+.navbar-brand-custom {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-family: 'Outfit', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    color: var(--primary) !important;
+}
+
+.navbar-brand-custom i {
+    font-size: 1.6rem;
+    filter: drop-shadow(0 2px 8px rgba(var(--primary-rgb), 0.3));
+}
+
+.nav-link-custom {
+    font-weight: 600;
+    color: var(--text-secondary) !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+}
+
+.nav-link-custom:hover, .nav-link-custom.active {
+    color: var(--primary) !important;
+    background: rgba(var(--primary-rgb), 0.08);
+}
+
+/* Theme Toggle Button */
+.theme-toggle-btn {
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: var(--bg-tertiary);
+    transition: all 0.2s ease;
+}
+
+.theme-toggle-btn:hover {
+    color: var(--primary);
+    transform: scale(1.05);
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    padding: 6rem 0 4rem;
+    overflow: hidden;
+}
+
+.hero-badge {
+    background: rgba(var(--primary-rgb), 0.1);
+    color: var(--primary);
+    padding: 0.5rem 1.25rem;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    line-height: 1.1;
+    margin-bottom: 1.5rem;
+    background: linear-gradient(135deg, var(--text-primary) 30%, var(--primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-description {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    margin-bottom: 2.5rem;
+    line-height: 1.6;
+}
+
+/* Action Buttons */
+.btn-primary-custom {
+    background: var(--primary);
+    color: #ffffff;
+    font-weight: 600;
+    padding: 0.75rem 1.75rem;
+    border-radius: 10px;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 14px rgba(var(--primary-rgb), 0.4);
+    transition: all 0.2s ease;
+}
+
+.btn-primary-custom:hover {
+    background: var(--primary-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(var(--primary-rgb), 0.5);
+    color: #ffffff;
+}
+
+.btn-secondary-custom {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-weight: 600;
+    padding: 0.75rem 1.75rem;
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.btn-secondary-custom:hover {
+    background: var(--border-color);
+    color: var(--text-primary);
+    transform: translateY(-2px);
+}
+
+/* Credit Decision Badge */
+.decision-badge {
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.decision-approved {
+    background: rgba(var(--success-rgb), 0.15);
+    color: var(--success);
+    border: 1px solid rgba(var(--success-rgb), 0.3);
+}
+
+.decision-rejected {
+    background: rgba(var(--danger-rgb), 0.15);
+    color: var(--danger);
+    border: 1px solid rgba(var(--danger-rgb), 0.3);
+}
+
+/* Speedometer gauge for credit score */
+.gauge-container {
+    position: relative;
+    width: 240px;
+    height: 120px;
+    margin: 2rem auto;
+    overflow: hidden;
+}
+
+.gauge-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    border-radius: 50%;
+    background: var(--bg-tertiary);
+    border: 24px solid var(--bg-tertiary);
+    border-bottom-color: var(--primary);
+    border-left-color: var(--primary);
+    transform: rotate(45deg);
+    box-sizing: border-box;
+}
+
+.gauge-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 200%;
+    border-radius: 50%;
+    border: 24px solid transparent;
+    border-bottom-color: var(--success);
+    border-left-color: var(--success);
+    transform: rotate(45deg);
+    box-sizing: border-box;
+    transition: transform 1.5s cubic-bezier(0.1, 0.8, 0.3, 1);
+}
+
+.gauge-needle {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 6px;
+    height: 80px;
+    background: var(--text-primary);
+    border-radius: 4px;
+    transform-origin: bottom center;
+    transform: translateX(-50%) rotate(0deg);
+    transition: transform 1.5s cubic-bezier(0.1, 0.8, 0.3, 1);
+}
+
+.gauge-center-node {
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    width: 24px;
+    height: 24px;
+    background: var(--text-primary);
+    border-radius: 50%;
+    transform: translateX(-50%);
+}
+
+.gauge-label {
+    text-align: center;
+    font-size: 2.2rem;
+    font-weight: 800;
+    margin-top: -10px;
+    font-family: 'Outfit', sans-serif;
+}
+
+/* Dashboard Analytics Grid */
+.analytics-card {
+    border: none;
+    border-radius: 16px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.analytics-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.icon-blue {
+    background: rgba(59, 130, 246, 0.12);
+    color: #3b82f6;
+}
+
+.icon-green {
+    background: rgba(16, 185, 129, 0.12);
+    color: #10b981;
+}
+
+.icon-red {
+    background: rgba(239, 68, 68, 0.12);
+    color: #ef4444;
+}
+
+.icon-gold {
+    background: rgba(245, 158, 11, 0.12);
+    color: #f59e0b;
+}
+
+/* Form Styles */
+.form-floating > .form-control-custom {
+    padding: 1rem 0.75rem;
+}
+
+.form-select-custom, .form-input-custom {
+    background-color: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 10px !important;
+    padding: 0.75rem 1rem !important;
+    transition: all 0.2s ease !important;
+}
+
+.form-select-custom:focus, .form-input-custom:focus {
+    border-color: var(--primary) !important;
+    box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.15) !important;
+    outline: none !important;
+}
+
+.form-label-custom {
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-secondary);
+}
+
+/* Footer Section */
+.footer-custom {
+    background: var(--bg-secondary);
+    border-top: 1px solid var(--border-color);
+    padding: 3rem 0;
+    margin-top: auto;
+}
+
+/* Page Preloader/Spinner */
+.preloader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: var(--bg-primary);
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.preloader.fade-out {
+    opacity: 0;
+    visibility: hidden;
+}
+
+.spinner-custom {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(var(--primary-rgb), 0.1);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Tooltips & Modals */
+.modal-content-custom {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+}
+
+/* List with checkmarks/crossmarks */
+.decision-list {
+    list-style: none;
+}
+
+.decision-list li {
+    position: relative;
+    padding-left: 2rem;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.decision-list li i {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    font-size: 1.15rem;
+}
+
+.decision-list-good li i {
+    color: var(--success);
+}
+
+.decision-list-bad li i {
+    color: var(--danger);
+}
+
+/* Search bar styling */
+.search-wrapper {
+    position: relative;
+}
+
+.search-wrapper i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.search-wrapper input {
+    padding-left: 2.75rem !important;
+}
+
+/* Custom table styling */
+.table-custom {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 0.5rem;
+}
+
+.table-custom th {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    padding: 1rem;
+    border: none;
+}
+
+.table-custom td {
+    background: var(--bg-secondary);
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table-custom tr td:first-child {
+    border-left: 1px solid var(--border-color);
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.table-custom tr td:last-child {
+    border-right: 1px solid var(--border-color);
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
